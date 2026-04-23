@@ -1,7 +1,7 @@
-import { ConflictException, HttpStatus, Injectable } from '@nestjs/common';
+import { EXCEPTION_MESSAGES } from '@/common/const';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
-import { EXCEPTION_MESSAGES } from '@/common/const';
 
 @Injectable()
 export class UsersService {

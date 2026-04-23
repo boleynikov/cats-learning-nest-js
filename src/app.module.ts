@@ -1,11 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '@/app.controller';
-import { ExercisesController } from '@/modules/exercises/exercises.controller';
-import { TrainingsController } from '@/modules/trainings/trainings.controller';
-import { ExercisesService } from './modules/exercises/exercises.service';
-import { TrainingsService } from './modules/trainings/trainings.service';
-import { DatabaseModule } from './database/database.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { ExercisesModule } from './modules/exercises/exercises.module';
 import { TrainingsModule } from './modules/trainings/trainings.module';
 import { UsersModule } from './modules/users/users.module';
@@ -16,12 +11,23 @@ import { UsersModule } from './modules/users/users.module';
       isGlobal: true,
       envFilePath: '.env'
     }),
-    DatabaseModule,
+    SequelizeModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        dialect: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        autoLoadModels: true,
+        synchronize: false
+      }),
+      inject: [ConfigService],
+    }),
     ExercisesModule,
     TrainingsModule,
     UsersModule,
   ],
-  controllers: [AppController, ExercisesController, TrainingsController],
-  providers: [ExercisesService, TrainingsService],
 })
 export class AppModule { }

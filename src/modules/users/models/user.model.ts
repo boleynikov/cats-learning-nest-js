@@ -1,4 +1,5 @@
-import { Column, Model, Table } from "sequelize-typescript";
+import { Training } from "@/modules/trainings/models/training.model";
+import { Column, HasMany, Model, Table } from "sequelize-typescript";
 
 @Table
 export class User extends Model {
@@ -10,4 +11,10 @@ export class User extends Model {
 
     @Column({ unique: true })
     email: string;
+
+    @Column({ defaultValue: true })
+    isActive: boolean;
+
+    @HasMany(() => Training)
+    trainings: Training[];
 }
