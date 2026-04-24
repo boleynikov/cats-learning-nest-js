@@ -12,7 +12,7 @@ async function bootstrap() {
     .setTitle('Training app')
     .setDescription('The training app API description')
     .setVersion('1.0')
-    .addTag('trainings')
+    .addTag('Api for trainings')
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);

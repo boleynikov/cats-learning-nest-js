@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { TrainingsService } from './trainings.service';
 import { TrainingDto } from './dto/training.dto';
 
@@ -6,8 +6,13 @@ import { TrainingDto } from './dto/training.dto';
 export class TrainingsController {
     constructor(private trainingsService: TrainingsService) { }
 
+    @Get()
+    async findAll() {
+        return this.trainingsService.findAll();
+    }
+
     @Get(':id')
-    async findById(@Param('id') id: number) {
+    async findById(@Param('id', ParseIntPipe) id: number) {
         return this.trainingsService.findOne(id);
     }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
@@ -12,7 +12,7 @@ export class UsersController {
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: string) {
+    async findOne(@Param('id', ParseIntPipe) id: string) {
         return this.usersService.findOne(+id);
     }
 
@@ -23,7 +23,7 @@ export class UsersController {
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: UserDto) {
+    async update(@Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UserDto) {
         const [numberOfAffectedRows, updatedUser] = await this.usersService.update(+id, updateUserDto);
         console.log('affected rows: ', numberOfAffectedRows);
         
@@ -32,7 +32,7 @@ export class UsersController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    async remove(@Param('id') id: string) {
+    async remove(@Param('id', ParseIntPipe) id: string) {
         await this.usersService.remove(+id);
     }
 }
